@@ -26,18 +26,24 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate regDate;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id", nullable = false, unique = true)
     private Details userDetails;
 
+    @PrePersist
+    public void onCreate() {
+        if (regDate == null) {
+            regDate = LocalDate.now();
+        }
+    }
 
-    public AppUser(String username, String password, LocalDate regDate, Details userDetails) {
+    public AppUser(String username, String password, Details userDetails) {
         this.username = username;
         this.password = password;
-        this.regDate = regDate;
         this.userDetails = userDetails;
     }
 
