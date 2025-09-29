@@ -12,7 +12,6 @@ public interface DetailsRepository extends JpaRepository<Details, Integer> {
 
     Optional<Details>findByEmail(String email);
 
-//    List<Details>findByNameContains(String name);
 
     @Query("SELECT d FROM Details d WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<Details> findByNameContainsIgnoreCase(@Param("name") String name);
