@@ -44,12 +44,24 @@ public class BookLoan {
         this.book = book;
     }
 
+    // --- Constructor that calculates dueDate automatically ---
+    public BookLoan(Book book, AppUser borrower) {
+        this.book = book;
+        this.borrower = borrower;
+        this.loanDate = LocalDate.now();
+        this.dueDate = loanDate.plusDays(book.getMaxLoanDays());
+        this.returned = false;
+    }
+
+    // --- PrePersist hook as a safety net ---
     @PrePersist
     public void onCreate() {
         if (loanDate == null) {
             loanDate = LocalDate.now();
         }
+        if (book != null && dueDate == null) {
+            dueDate = loanDate.plusDays(book.getMaxLoanDays());
+        }
     }
-
 
 }
